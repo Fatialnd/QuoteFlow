@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+.DS_Store
+.env
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Parcel or Webpack files
+.cache/
+dist/
+build/
+
+# Temporary or system files
+*.tmp
+*.swp
+*.swo
+*~
+
+# Coverage reports (from testing)
+coverage/
+
+# ESLint cache
+.eslintcache
+
+# Optional lock files
+package-lock.json
+yarn.lock
+
+# macOS system files
+.DS_Store
+
+# Ignore IDE project files
+*.iml
+*.ipr
+*.iws
