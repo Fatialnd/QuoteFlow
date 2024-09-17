@@ -18,6 +18,29 @@ const quoteContainer = document.querySelector(".quote-container");
 const quoteHeader = document.querySelector(".quote-header");
 const speech = document.querySelector(".speech");
 
+function speakQuote() {
+  const utterance = new SpeechSynthesisUtterance(currentQuote);
+  speechSynthesis.speak(utterance);
+}
+
+speech.addEventListener("click", () => {
+  speakQuote();
+});
+
+function speakQuote() {
+  if (speechSynthesis.speaking) {
+    return;
+  }
+
+  if (currentQuote === "") {
+    showNotification("No quote available to read.");
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(currentQuote);
+  speechSynthesis.speak(utterance);
+}
+
 let currentQuote = "";
 let previousState = { quote: "", buttonsVisible: true };
 
@@ -60,22 +83,41 @@ function addQuoteToFavorites() {
 }
 
 function showFavorites() {
+  previousState.quote = currentQuote;
+
   const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   favoritesList.innerHTML = "";
+
   if (favorites.length === 0) {
     favoritesList.textContent = "No favorite quotes added yet.";
+    favoritesList.classList.add("empty-favorites");
   } else {
+    favoritesList.classList.remove("empty-favorites");
     const list = document.createElement("ul");
-    favorites.forEach((quote) => {
+    favorites.forEach((quote, index) => {
       const listItem = document.createElement("li");
-      listItem.textContent = quote;
+
+      const quoteText = document.createElement("span");
+      quoteText.textContent = quote;
+      listItem.appendChild(quoteText);
+
+      const deleteButton = document.createElement("button");
+      document.body.appendChild(deleteButton);
+      deleteButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+        <path d="M170.5 51.6L151.5 80l145 0-19-28.4c-1.5-2.2-4-3.6-6.7-3.6l-93.7 0c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80 368 80l48 0 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-8 0 0 304c0 44.2-35.8 80-80 80l-224 0c-44.2 0-80-35.8-80-80l0-304-8 0c-13.3 0-24-10.7-24-24S10.7 80 24 80l8 0 48 0 13.8 0 36.7-55.1C140.9 9.4 158.4 0 177.1 0l93.7 0c18.7 0 36.2 9.4 46.6 24.9zM80 128l0 304c0 17.7 14.3 32 32 32l224 0c17.7 0 32-14.3 32-32l0-304L80 128zm80 64l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208c0-8.8 7.2-16 16-16s16 7.2 16 16z"/>
+      </svg>`;
+      deleteButton.style.marginLeft = "10px";
+      deleteButton.addEventListener("click", () => {
+        removeQuoteFromFavorites(index);
+      });
+      listItem.appendChild(deleteButton);
+
       list.appendChild(listItem);
     });
     favoritesList.appendChild(list);
   }
 
-  previousState.quote = quoteText.textContent;
-  previousState.buttonsVisible = newQuoteButton.style.display !== "none";
   quoteText.style.display = "none";
   newQuoteButton.style.display = "none";
   favoriteQuoteButton.style.display = "none";
@@ -83,25 +125,31 @@ function showFavorites() {
   showFavoritesButton.style.display = "none";
   quoteHeader.style.display = "none";
   speech.style.display = "none";
+
   backToQuoteButton.style.display = "block";
   favoritesList.style.display = "block";
+}
+
+function removeQuoteFromFavorites(index) {
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  favorites.splice(index, 1);
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  showNotification("Quote removed!");
+  showFavorites();
 }
 
 function showQuoteContainer() {
   quoteText.textContent = previousState.quote;
   quoteText.style.display = "block";
-  newQuoteButton.style.display = previousState.buttonsVisible
-    ? "inline-block"
-    : "none";
-  favoriteQuoteButton.style.display = previousState.buttonsVisible
-    ? "inline-block"
-    : "none";
-  shareQuoteButton.style.display = previousState.buttonsVisible
-    ? "inline-block"
-    : "none";
+
+  newQuoteButton.style.display = "inline-block";
+  favoriteQuoteButton.style.display = "inline-block";
+  shareQuoteButton.style.display = "inline-block";
   showFavoritesButton.style.display = "inline-block";
+
   quoteHeader.style.display = "block";
   speech.style.display = "block";
+
   backToQuoteButton.style.display = "none";
   favoritesList.style.display = "none";
 }
