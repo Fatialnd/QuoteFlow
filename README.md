@@ -34,10 +34,3 @@ QuoteFlow is a single-page application that provides daily inspirational quotes 
 
 Quotes are retrieved from [ZenQuotes API](https://zenquotes.io/api). Refer to their documentation for more details.
 
-## Contributing
-
-Feel free to fork the repository and submit pull requests. Contributions and feedback are welcome!
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
