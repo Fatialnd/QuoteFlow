@@ -7,7 +7,7 @@ QuoteFlow is a single-page application that provides daily inspirational quotes 
 - **Quote of the Day**: Get a daily inspirational quote when you open the app.
 - **Favorites**: Like quotes to save them to your favorites list. You can view and remove quotes from this list later.
 - **Quote Reader**: Click the speech button to hear the quote read aloud.
-- **Share Quotes**: Easily share quotes with others using the share button.
+- **Share Quotes**: Easily share quotes with others on X using the share button.
 - **New Quote**: Refresh the quote by clicking the "New Quote" button.
 - **Favorites View**: Access your saved favorite quotes by clicking the "Show Favorites" button. You can return to the main view with a "Back" button.
 
@@ -33,4 +33,3 @@ QuoteFlow is a single-page application that provides daily inspirational quotes 
 ## API Documentation
 
 Quotes are retrieved from [ZenQuotes API](https://zenquotes.io/api). Refer to their documentation for more details.
-
